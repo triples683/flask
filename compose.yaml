@@ -1,17 +1,12 @@
+version: '3.8'
+
 services:
-  flask:
-    restart: unless-stopped
-    build:
-      context: ./flask
-      dockerfile: Dockerfile
-    deploy:
-      resources:
-        reservations:
-          cpus: "1.0"
-          memory: 512M
+  xolar:
+    build: .
     ports:
-      - mode: ingress
-        target: 5000
-        published: 5000
-    healthcheck:
-      test: ["CMD", "python3", "-c", "import sys, urllib.request; urllib.request.urlopen(sys.argv[1]).read()", "http://localhost:5000/"]
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+    restart: unless-stopped
